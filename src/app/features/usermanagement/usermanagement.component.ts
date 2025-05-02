@@ -4,7 +4,7 @@ import { FeaturesService } from '../features.service';
 import { MatIconModule } from '@angular/material/icon';
 import { MatTableDataSource, MatTableModule } from '@angular/material/table';
 import { MatButtonModule } from '@angular/material/button';
-import { MatSelectModule } from '@angular/material/select';
+import { MatFormField, MatSelectModule } from '@angular/material/select';
 import { MatDialogModule } from '@angular/material/dialog';
 import { FormsModule } from '@angular/forms';
 import { AddempComponent } from '../../core/addemp/addemp.component';
@@ -12,6 +12,7 @@ import { UpdatesEmpComponent } from '../../core/updateemp/updateemp.component';
 import { DeleteEmpComponent } from '../../core/deleteemp/deleteemp.component';
 import { MatPaginatorModule } from '@angular/material/paginator';
 import { ModalinfoComponent } from '../../core/modalinfo_laptop/modalinfo.component';  // Import it here
+import { MatInput } from '@angular/material/input';
 
 interface Employee {
   employeeName: string;
@@ -33,7 +34,9 @@ interface Employee {
     FormsModule,
     AddempComponent,
     MatPaginatorModule,
-    ModalinfoComponent  // <-- Ensure this is imported here
+    ModalinfoComponent,
+    MatFormField,
+    MatInput
   ],
   templateUrl: './usermanagement.component.html',
   styleUrl: './usermanagement.component.css',

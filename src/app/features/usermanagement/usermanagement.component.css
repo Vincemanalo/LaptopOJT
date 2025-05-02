@@ -273,6 +273,44 @@ td:last-child, th:last-child {
   background-color: #fff !important;
 }
 
+/* Container to hold action buttons centered with spacing */
+.action-button-group {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 12px; /* Spacing between buttons */
+}
+
+/* Make buttons bigger and properly aligned */
+.action-button-group button {
+  width: 48px;
+  height: 48px;
+  padding: 0;
+  border-radius: 6px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+/* Bigger, centered icon inside button */
+.action-button-group mat-icon {
+  font-size: 26px !important;
+  width: 26px;
+  height: 26px;
+  color: #005CBB !important;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  line-height: 1;
+}
+
+/* Subtle blue hover background */
+.action-button-group button:hover {
+  background-color: rgba(0, 92, 187, 0.1);
+  transition: background-color 0.3s ease;
+}
+
+
 /* ----------------------- */
 /* RESPONSIVENESS SECTION */
 /* ----------------------- */
@@ -358,4 +396,11 @@ td:last-child, th:last-child {
   .search-btn {
     font-size: 1.3rem;
   }
+}
+
+::ng-deep mat-form-field .mat-mdc-form-field-subscript-wrapper {
+  display: none !important;
+  height: 0 !important;
+  margin: 0 !important;
+  padding: 0 !important;
 }

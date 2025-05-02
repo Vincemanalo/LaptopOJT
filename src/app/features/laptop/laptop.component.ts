@@ -5,13 +5,14 @@ import { FeaturesService } from '../features.service';
 import { MatIconModule } from '@angular/material/icon';
 import { MatTableModule } from '@angular/material/table';
 import { MatButtonModule } from '@angular/material/button';
-import { MatSelectModule } from '@angular/material/select';
+import { MatFormField, MatSelectModule } from '@angular/material/select';
 import { MatDialog, MatDialogModule } from '@angular/material/dialog';
 import { FormsModule } from '@angular/forms';
 import { UpdatesComponent } from '../../core/updates/updates.component';
 import { DeleteComponent } from '../../core/delete/delete.component';
 import { MatPaginatorModule } from '@angular/material/paginator';
 import { ModalinfoComponent } from '../../core/modalinfo_laptop/modalinfo.component';
+import { MatInput } from '@angular/material/input';
 
 interface Laptop {
   laptopName: string;
@@ -37,7 +38,9 @@ interface Laptop {
     MatDialogModule,
     FormsModule,
     MatPaginatorModule,
-    ModalinfoComponent
+    ModalinfoComponent,
+    MatFormField,
+    MatInput
   ],
   templateUrl: './laptop.component.html',
   styleUrls: ['./laptop.component.css'],

@@ -1,29 +1,59 @@
-<main id="main-content"> 
+<main id="main-content">
   <section class="table-add-laptop">
     <div class="parent-container">
       <div class="dashboard-card">
+
         <div class="toolbar">
           <button id="open-modal" class="add-button" (click)="openModal()">
-            <mat-icon aria-hidden="false" aria-label="Example home icon" fontIcon="add_circle"></mat-icon>
+            <mat-icon aria-hidden="false" aria-label="Add icon" fontIcon="add_circle"></mat-icon>
             <p>Add New Laptop</p>
           </button>
 
-          <div class="search-container">
-            <input matInput type="text" placeholder="Search..." class="search-input" [(ngModel)]="searchKeyword" />
-            <button class="search-btn" (click)="onSearch()">
-              <mat-icon class="search-btn" aria-hidden="false" aria-label="Example home icon"
-                fontIcon="search"></mat-icon>
+          <!-- Search Form Field -->
+          <mat-form-field appearance="outline" class="search-field">
+            <mat-label>Search laptops</mat-label>
+            <input
+              matInput
+              type="text"
+              name="searchKeyword"
+              placeholder="Search…"
+              class="search-input"
+              [(ngModel)]="searchKeyword"
+              (keyup.enter)="onSearch()"
+              aria-label="Search laptops"
+            />
+            <button
+              mat-icon-button
+              matSuffix
+              type="button"
+              (click)="clearSearch()"
+              *ngIf="searchKeyword.trim()"
+              aria-label="Clear search"
+            >
+              <mat-icon>close</mat-icon>
             </button>
-          </div>
+            <button
+              mat-icon-button
+              matSuffix
+              type="button"
+              (click)="onSearch()"
+              [disabled]="!searchKeyword.trim()"
+              aria-label="Search"
+            >
+              <mat-icon>search</mat-icon>
+            </button>
+          </mat-form-field>
         </div>
 
         <div class="table-container">
           <table mat-table class="mat-elevation-z8" [dataSource]="laptops">
+            <!-- Laptop Name Column -->
             <ng-container matColumnDef="laptopName">
               <th mat-header-cell *matHeaderCellDef>Laptop Name</th>
               <td mat-cell *matCellDef="let laptop">{{ laptop.laptopName }}</td>
             </ng-container>
-
+            
+            <!-- Serial Number Column -->
             <ng-container matColumnDef="laptopSerialNumber">
               <th mat-header-cell *matHeaderCellDef>Serial Number</th>
               <td mat-cell *matCellDef="let laptop">
@@ -31,6 +61,7 @@
               </td>
             </ng-container>
 
+            <!-- Description Column -->
             <ng-container matColumnDef="laptopDescription">
               <th mat-header-cell *matHeaderCellDef>Description</th>
               <td mat-cell *matCellDef="let laptop">
@@ -38,6 +69,7 @@
               </td>
             </ng-container>
 
+            <!-- Purchase Date Column -->
             <ng-container matColumnDef="laptopPurchaseDate">
               <th mat-header-cell *matHeaderCellDef>Purchased Date</th>
               <td mat-cell *matCellDef="let laptop">
@@ -45,6 +77,7 @@
               </td>
             </ng-container>
 
+            <!-- Location Column -->
             <ng-container matColumnDef="laptopLocation">
               <th mat-header-cell *matHeaderCellDef>Location</th>
               <td mat-cell *matCellDef="let laptop">
@@ -52,6 +85,7 @@
               </td>
             </ng-container>
 
+            <!-- Assigned To Column -->
             <ng-container matColumnDef="laptopAssignedTo">
               <th mat-header-cell *matHeaderCellDef>Assigned To</th>
               <td mat-cell *matCellDef="let laptop">
@@ -59,6 +93,7 @@
               </td>
             </ng-container>
 
+            <!-- Condition Column -->
             <ng-container matColumnDef="laptopCondition">
               <th mat-header-cell *matHeaderCellDef>Condition</th>
               <td mat-cell *matCellDef="let laptop">
@@ -66,20 +101,24 @@
               </td>
             </ng-container>
 
+            <!-- Actions Column -->
             <ng-container matColumnDef="actions">
               <th mat-header-cell *matHeaderCellDef>Actions</th>
-              <td mat-cell *matCellDef="let laptop" class="actionbtn">
-                <button class="actionbtn" mat-button color="primary" (click)="openModalinfo(laptop)">
-                  <mat-icon class="custom-info-icon">info</mat-icon>
-                </button>
-                <button class="actionbtn" mat-button color="primary" (click)="openEditModal(laptop)">
-                  <mat-icon class="material-symbols-outlined">edit</mat-icon>
-                </button>
-                <button class="actionbtn" mat-button color="primary" (click)="openDeleteModal(laptop)">
-                  <mat-icon class="material-symbols-outlined">delete</mat-icon>
-                </button>
+              <td mat-cell *matCellDef="let laptop  ">
+                <div class="action-button-group">
+                  <button mat-icon-button (click)="openModalinfo(laptop)" aria-label="View Info">
+                    <mat-icon class="custom-info-icon">info</mat-icon>
+                  </button>
+                  <button mat-icon-button (click)="openModalinfo(laptop)" aria-label="Edit">
+                    <mat-icon class="material-symbols-outlined">edit</mat-icon>
+                  </button>
+                  <button mat-icon-button (click)="openModalinfo(laptop)" aria-label="Delete">
+                    <mat-icon class="material-symbols-outlined">delete</mat-icon>
+                  </button>
+                </div>
               </td>
             </ng-container>
+
 
             <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
             <tr mat-row *matRowDef="let row; columns: displayedColumns"></tr>
@@ -96,16 +135,23 @@
     </div>
   </section>
 
+  <!-- Modals -->
   <app-modal *ngIf="isModalOpen" (closeModalEvent)="closeModal()"></app-modal>
   <app-modalinfo
     *ngIf="isModalinfoOpen"
     [selectedLaptop]="selectedLaptop"
     (closeModalEvent)="closeModalinfo()">
   </app-modalinfo>
-  <app-updates *ngIf="isEditModalOpen" [selectedLaptop]="selectedLaptop" (refreshTableEvent)="getLaptops()"
+  <app-updates
+    *ngIf="isEditModalOpen"
+    [selectedLaptop]="selectedLaptop"
+    (refreshTableEvent)="getLaptops()"
     (closeModalEvent)="closeEditModal()">
   </app-updates>
-  <app-delete *ngIf="isDeleteModalOpen" [selectedLaptop]="selectedLaptop" (refreshTableEvent)="getLaptops()"
+  <app-delete
+    *ngIf="isDeleteModalOpen"
+    [selectedLaptop]="selectedLaptop"
+    (refreshTableEvent)="getLaptops()"
     (closeModalEvent)="closeDeleteModal()">
   </app-delete>
 </main>

@@ -14,6 +14,8 @@ import { MatPaginatorModule } from '@angular/material/paginator';
 import { Modalinfo_desktopComponent } from '../../core/modalinfo-desktop/modalinfo-desktop.component';
 import { DeleteDesktopComponent } from '../../core/delete-desktop/delete-desktop.component';
 import { UpdatesDesktopComponent } from "../../core/updates-desktop/updates-desktop.component";
+import { MatFormField, MatFormFieldControl } from '@angular/material/form-field';
+import { MatInput } from '@angular/material/input';
 
 interface Desktop {
   desktopName: string;
@@ -42,6 +44,11 @@ interface Desktop {
     FormsModule,
     MatPaginatorModule,
     Modalinfo_desktopComponent,
+    MatFormField,
+    MatInput
+
+
+    
 ],
   templateUrl: './desktop.component.html',
   styleUrls: ['./desktop.component.css'],

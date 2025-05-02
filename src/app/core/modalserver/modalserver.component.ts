@@ -1,14 +1,20 @@
- import { ChangeDetectionStrategy, Component, EventEmitter, Output } from "@angular/core";
-import { MatIconModule } from "@angular/material/icon";
-import { FormBuilder, FormGroup, FormsModule, ReactiveFormsModule, Validators } from "@angular/forms";
-import { Router } from "@angular/router";
-import { CommonModule } from "@angular/common";
-import { FeaturesService } from "../../features/features.service";
-import { MatFormFieldModule } from "@angular/material/form-field";
+import {
+  ChangeDetectionStrategy,
+  Component,
+  EventEmitter,
+  Output,
+  OnInit,
+} from '@angular/core';
+import { FormBuilder, FormGroup, Validators, FormsModule, ReactiveFormsModule } from '@angular/forms';
+import { Router } from '@angular/router';
+import { CommonModule } from '@angular/common';
+import { FeaturesService } from '../../features/features.service';
+import { MatIconModule } from '@angular/material/icon';
+import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
-import { MatSelectModule } from "@angular/material/select";
+import { MatSelectModule } from '@angular/material/select';
 import { MatDatepickerModule } from '@angular/material/datepicker';
-import { MatNativeDateModule } from "@angular/material/core";
+import { MatNativeDateModule } from '@angular/material/core';
 
 interface Employee {
   _id: string;
@@ -19,7 +25,8 @@ interface Employee {
 }
 
 @Component({
-  selector: "app-modal-server",
+  selector: 'app-modal-server',
+  standalone: true,
   imports: [
     ReactiveFormsModule,
     CommonModule,
@@ -32,65 +39,61 @@ interface Employee {
     MatNativeDateModule,
   ],
   changeDetection: ChangeDetectionStrategy.OnPush,
-  templateUrl: "./modalserver.component.html",
-  styleUrls: ["./modalserver.component.css"],
-  standalone: true,
+  templateUrl: './modalserver.component.html',
+  styleUrls: ['./modalserver.component.css'],
 })
-export class ModalserverComponent {
+export class ModalserverComponent implements OnInit {
   @Output() closeModalEvent = new EventEmitter<void>();
 
-  employees: Employee[] = []; // Store employees data
-  server: any = {};
-  selectedEmployeeId: string = ""; // Store selected employee ID
-  // Changed the form group name from editLaptopForm to editServerForm
-  editServerForm: FormGroup;
+  employees: Employee[] = [];
   isModalOpen: boolean = true;
-  isAddEmployeeOpen: boolean = false; // For Add Employee modal
-  newEmployee: string = "";
+  isAddEmployeeOpen: boolean = false;
+  newEmployee: string = '';
+  selectedEmployeeId: string = '';
+  addServerForm: FormGroup;
 
   constructor(
     private fb: FormBuilder,
     private router: Router,
     private featuresService: FeaturesService
   ) {
-    // Updated form group with new control names matching the HTML ids and formControlName values
-    this.editServerForm = this.fb.group({
-      serverSerialNumber: ["", Validators.required],
-      serverPurchaseDate: ["", Validators.required],
-      serverLocation: ["", Validators.required],
-      serverassignedTo: [null, Validators.required],
-      serverStatus: ["", Validators.required],
+    this.addServerForm = this.fb.group({
+      serverName: ['', Validators.required],
+      serverSerialNumber: ['', Validators.required],
+      serverOs: ['', Validators.required],
+      serverProcessor: ['', Validators.required],
+      serverRam: ['', Validators.required],
+      serverPurchaseDate: ['', Validators.required],
+      serverLocation: ['', Validators.required],
+      serverAssignedTo: ['', Validators.required],
+      serverCondition: ['', Validators.required],
     });
-  }
+      }
 
   ngOnInit(): void {
     this.getEmployees();
 
-    console.log("Form Initial Validity:", this.editServerForm.valid);
-    this.editServerForm.statusChanges.subscribe(status => {
-      console.log("Form Status Changed:", status);
+    console.log('Form Initial Validity:', this.addServerForm.valid);
+    this.addServerForm.statusChanges.subscribe(status => {
+      console.log('Form Status Changed:', status);
     });
   }
 
-  // Fetch employees from backend
   getEmployees(): void {
     this.featuresService.getAllEmployee().subscribe({
       next: (response) => {
-        console.log("Raw API Response:", response); // Debugging
+        console.log('Raw API Response:', response);
         this.employees = response.employees;
-        console.log("Employees after assignment:", this.employees);
+        console.log('Employees after assignment:', this.employees);
       },
-      error: (error) => console.error("Error fetching employees:", error),
+      error: (error) => console.error('Error fetching employees:', error),
     });
   }
 
-  isOpen = false;
-
   openModal() {
-    this.isOpen = true;
+    this.isModalOpen = true;
   }
 
-  // Close main modal
   closeModal() {
     this.isModalOpen = false;
     this.closeModalEvent.emit();
@@ -98,7 +101,7 @@ export class ModalserverComponent {
 
   onAssignedChange(event: Event) {
     const selectedValue = (event.target as HTMLSelectElement).value;
-    if (selectedValue === "add") {
+    if (selectedValue === 'add') {
       this.openAddEmployeeModal();
     }
   }
@@ -109,22 +112,23 @@ export class ModalserverComponent {
 
   closeAddEmployeeModal() {
     this.isAddEmployeeOpen = false;
-    this.newEmployee = "";
+    this.newEmployee = '';
   }
 
   onSubmit() {
-    if (this.editServerForm.valid) {
-      const serverData = this.editServerForm.value;
-      console.log("Submitting:", serverData);
+    if (this.addServerForm.valid) {
+      const serverData = this.addServerForm.value;
+      console.log('Submitting:', serverData);
 
-      // Assuming a service method exists for adding a server.
-      this.featuresService.addLaptop(serverData).subscribe({
+      this.featuresService.addServer(serverData).subscribe({
         next: (response) => {
-          console.log("Server added successfully:", response);
+          console.log('Server added successfully:', response);
+          alert(response.message || 'Server added successfully.');
           this.closeModal();
         },
         error: (error) => {
-          console.error("Error adding server:", error);
+          console.error('Error adding server:', error);
+          alert(error.message || 'An unexpected error occurred.');
         },
       });
     }

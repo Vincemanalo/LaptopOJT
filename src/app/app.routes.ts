@@ -18,11 +18,11 @@ export const routes: Routes = [
     path: 'main',
     component: MainLayoutComponent,
     children: [
-      { path: 'dashboard', component: DashboardComponent, data: {title: 'Dashboard - Laptop Inventory'} },
-      { path: 'laptop', component: LaptopComponent, data: {title: 'Laptop - Laptop Inventory'} },
-      { path: 'user-management', component: UserManagementComponent, data: {title: 'Employees - Laptop Inventory'}  },
-      { path: 'desktop', component: DesktopComponent, data: {title: 'Desktop - Laptop Inventory'}  },
-      { path: 'server', component: ServerComponent, data: {title: 'Server - Laptop Inventory'}  },
+      { path: 'dashboard', component: DashboardComponent },
+      { path: 'laptop', component: LaptopComponent},
+      { path: 'user-management', component: UserManagementComponent},
+      { path: 'desktop', component: DesktopComponent},
+      { path: 'server', component: ServerComponent  },
     ],
   },
 ];

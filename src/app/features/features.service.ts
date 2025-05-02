@@ -11,11 +11,11 @@ import { catchError, map, Observable, retry, throwError } from 'rxjs';
   providedIn: 'root',
 })
 export class FeaturesService {
-  private baseUrl = 'http://10.0.0.36:3000';
+  private baseUrl = 'http://10.0.0.1:3000';
 
   constructor(private http: HttpClient) {}
 
-  // AUTHENTICATION--------------------------------------------------------------------------------------------------------------
+  // AUTHENTICATION --------------------------------------------------------------------------------------------------------------
   login(credentials: { email: string; password: string }): Observable<any> {
     return this.http.post(`${this.baseUrl}/auth/login`, credentials);
   }
@@ -27,19 +27,19 @@ export class FeaturesService {
       {},
       {
         headers: new HttpHeaders({
-          Authorization: `Bearer ${token}`, // Correct token format
+          Authorization: `Bearer ${token}`,
         }),
       }
     );
   }
 
-  // LAPTOP---------------------------------------------------------------------------------------------------------------------
+  // LAPTOP ---------------------------------------------------------------------------------------------------------------------
   addLaptop(laptop: any): Observable<any> {
     const token = sessionStorage.getItem('auth_token');
     const options = {
       headers: new HttpHeaders({
         'Content-Type': 'application/json',
-        Authorization: `Bearer ${token}`, // Correct token format
+        Authorization: `Bearer ${token}`,
       }),
     };
 
@@ -50,36 +50,38 @@ export class FeaturesService {
 
   getAllLaptop(page: number = 1, pageSize: number = 10, laptopName?: string, laptopSerialNumber?: string): Observable<any> {
     const token = sessionStorage.getItem('auth_token');
+    let params = new HttpParams()
+      .set('page', page.toString())
+      .set('pageSize', pageSize.toString());
+
+    if (laptopName) {
+      params = params.set('laptopName', laptopName);
+    }
+    if (laptopSerialNumber) {
+      params = params.set('laptopSerialNumber', laptopSerialNumber);
+    }
+
     const options = {
       headers: new HttpHeaders({
         'Content-Type': 'application/json',
         Authorization: `Bearer ${token}`,
       }),
-      params: new HttpParams()
-        .set('page', page.toString())
-        .set('pageSize', pageSize.toString())
+      params,
     };
-  
-    if (laptopName) {
-      options.params = options.params.set('laptopName', laptopName);
-    }
-    if (laptopSerialNumber) {
-      options.params = options.params.set('laptopSerialNumber', laptopSerialNumber);
-    }
-  
+
     return this.http.get<any>(`${this.baseUrl}/device/laptop`, options).pipe(
       map((data: any) => data),
       retry(3),
       catchError(this.handleError)
     );
-  }  
+  }
 
   getLaptopById(id: number): Observable<any> {
     const token = sessionStorage.getItem('auth_token');
     const options = {
       headers: new HttpHeaders({
         'Content-Type': 'application/json',
-        Authorization: `Bearer ${token}`, // Correct token format
+        Authorization: `Bearer ${token}`,
       }),
     };
 
@@ -93,7 +95,7 @@ export class FeaturesService {
     const options = {
       headers: new HttpHeaders({
         'Content-Type': 'application/json',
-        Authorization: `Bearer ${token}`, // Correct token format
+        Authorization: `Bearer ${token}`,
       }),
     };
 
@@ -107,7 +109,7 @@ export class FeaturesService {
     const options = {
       headers: new HttpHeaders({
         'Content-Type': 'application/json',
-        Authorization: `Bearer ${token}`, // Correct token format
+        Authorization: `Bearer ${token}`,
       }),
     };
 
@@ -116,14 +118,13 @@ export class FeaturesService {
       .pipe(retry(3), catchError(this.handleError));
   }
 
-
-  // DESKTOP---------------------------------------------------------------------------------------------------------------------
+  // DESKTOP ---------------------------------------------------------------------------------------------------------------------
   addDesktop(desktop: any): Observable<any> {
     const token = sessionStorage.getItem('auth_token');
     const options = {
       headers: new HttpHeaders({
         'Content-Type': 'application/json',
-        Authorization: `Bearer ${token}`, // Correct token format
+        Authorization: `Bearer ${token}`,
       }),
     };
 
@@ -134,36 +135,38 @@ export class FeaturesService {
 
   getAllDesktop(page: number = 1, pageSize: number = 10, desktopName?: string, desktopSerialNumber?: string): Observable<any> {
     const token = sessionStorage.getItem('auth_token');
+    let params = new HttpParams()
+      .set('page', page.toString())
+      .set('pageSize', pageSize.toString());
+
+    if (desktopName) {
+      params = params.set('desktopName', desktopName);
+    }
+    if (desktopSerialNumber) {
+      params = params.set('desktopSerialNumber', desktopSerialNumber);
+    }
+
     const options = {
       headers: new HttpHeaders({
         'Content-Type': 'application/json',
         Authorization: `Bearer ${token}`,
       }),
-      params: new HttpParams()
-        .set('page', page.toString())
-        .set('pageSize', pageSize.toString())
+      params,
     };
-  
-    if (desktopName) {
-      options.params = options.params.set('desktopName', desktopName);
-    }
-    if (desktopSerialNumber) {
-      options.params = options.params.set('desktopSerialNumber', desktopSerialNumber);
-    }
-  
+
     return this.http.get<any>(`${this.baseUrl}/device/desktop`, options).pipe(
       map((data: any) => data),
       retry(3),
       catchError(this.handleError)
     );
-  }  
+  }
 
   getDesktopById(id: number): Observable<any> {
     const token = sessionStorage.getItem('auth_token');
     const options = {
       headers: new HttpHeaders({
         'Content-Type': 'application/json',
-        Authorization: `Bearer ${token}`, // Correct token format
+        Authorization: `Bearer ${token}`,
       }),
     };
 
@@ -177,7 +180,7 @@ export class FeaturesService {
     const options = {
       headers: new HttpHeaders({
         'Content-Type': 'application/json',
-        Authorization: `Bearer ${token}`, // Correct token format
+        Authorization: `Bearer ${token}`,
       }),
     };
 
@@ -191,7 +194,7 @@ export class FeaturesService {
     const options = {
       headers: new HttpHeaders({
         'Content-Type': 'application/json',
-        Authorization: `Bearer ${token}`, // Correct token format
+        Authorization: `Bearer ${token}`,
       }),
     };
 
@@ -200,7 +203,7 @@ export class FeaturesService {
       .pipe(retry(3), catchError(this.handleError));
   }
 
-  // EMPLOYEE
+  // EMPLOYEE ---------------------------------------------------------------------------------------------------------------------
   addEmployee(employee: any): Observable<any> {
     const token = sessionStorage.getItem('auth_token');
     const options = {
@@ -220,7 +223,7 @@ export class FeaturesService {
     const options = {
       headers: new HttpHeaders({
         'Content-Type': 'application/json',
-        Authorization: `Bearer ${token}`, // Correct token format
+        Authorization: `Bearer ${token}`,
       }),
     };
 
@@ -236,7 +239,7 @@ export class FeaturesService {
     const options = {
       headers: new HttpHeaders({
         'Content-Type': 'application/json',
-        Authorization: `Bearer ${token}`, // Correct token format
+        Authorization: `Bearer ${token}`,
       }),
     };
 
@@ -250,7 +253,7 @@ export class FeaturesService {
     const options = {
       headers: new HttpHeaders({
         'Content-Type': 'application/json',
-        Authorization: `Bearer ${token}`, // Correct token format
+        Authorization: `Bearer ${token}`,
       }),
     };
 
@@ -260,31 +263,114 @@ export class FeaturesService {
   }
 
   disableEmployee(id: string): Observable<any> {
-    const token = sessionStorage.getItem('auth_token'); // Retrieve token from sessionStorage
+    const token = sessionStorage.getItem('auth_token');
     const options = {
       headers: new HttpHeaders({
         'Content-Type': 'application/json',
-        Authorization: `Bearer ${token}`, // Set token in the Authorization header
+        Authorization: `Bearer ${token}`,
       }),
     };
-  
+
     return this.http
-      .patch<any>(`${this.baseUrl}/user/employee/${id}`, { status: 'disabled' }, options) // Send the patch request with the token
-      .pipe(retry(3), catchError(this.handleError)); // Handle errors and retry
+      .patch<any>(`${this.baseUrl}/user/employee/${id}`, { status: 'disabled' }, options)
+      .pipe(retry(3), catchError(this.handleError));
   }
 
-  // ERROR HANDLING--------------------------------------------------------------------------------------------------------------
+  // SERVER ---------------------------------------------------------------------------------------------------------------------
+  addServer(server: any): Observable<any> {
+    const token = sessionStorage.getItem('auth_token');
+    const options = {
+      headers: new HttpHeaders({
+        'Content-Type': 'application/json',
+        Authorization: `Bearer ${token}`,
+      }),
+    };
+
+    return this.http
+      .post<any>(`${this.baseUrl}/device/server`, server, options)
+      .pipe(retry(3), catchError(this.handleError));
+  }
+
+  getAllServer(page: number = 1, pageSize: number = 10): Observable<any> {
+    const token = sessionStorage.getItem('auth_token');
+    const options = {
+      headers: new HttpHeaders({
+        'Content-Type': 'application/json',
+        Authorization: `Bearer ${token}`,
+      }),
+      params: new HttpParams()
+        .set('page', page.toString())
+        .set('pageSize', pageSize.toString()),
+    };
+
+    return this.http
+      .get<any>(`${this.baseUrl}/device/server`, options)
+      .pipe(retry(3), catchError(this.handleError));
+  }
+
+  updateServer(id: string, server: any): Observable<any> {
+    const token = sessionStorage.getItem('auth_token');
+    const options = {
+      headers: new HttpHeaders({
+        'Content-Type': 'application/json',
+        Authorization: `Bearer ${token}`,
+      }),
+    };
+
+    return this.http
+      .put<any>(`${this.baseUrl}/device/server/${id}`, server, options)
+      .pipe(retry(3), catchError(this.handleError));
+  }
+
+  disableServer(id: string): Observable<any> {
+    const token = sessionStorage.getItem('auth_token');
+    const options = {
+      headers: new HttpHeaders({
+        'Content-Type': 'application/json',
+        Authorization: `Bearer ${token}`,
+      }),
+    };
+
+    return this.http
+      .patch<any>(`${this.baseUrl}/device/server/${id}`, { status: 'disabled' }, options)
+      .pipe(retry(3), catchError(this.handleError));
+  }
+
+  getAllDisabledServer(): Observable<any> {
+    const token = sessionStorage.getItem('auth_token');
+    const options = {
+      headers: new HttpHeaders({
+        'Content-Type': 'application/json',
+        Authorization: `Bearer ${token}`,
+      }),
+    };
+
+    return this.http
+      .get<any>(`${this.baseUrl}/device/server/archived`, options)
+      .pipe(retry(3), catchError(this.handleError));
+  }
+
+  retrieveServer(id: string): Observable<any> {
+    const token = sessionStorage.getItem('auth_token');
+    const options = {
+      headers: new HttpHeaders({
+        'Content-Type': 'application/json',
+        Authorization: `Bearer ${token}`,
+      }),
+    };
+
+    return this.http
+      .patch<any>(`${this.baseUrl}/device/server/archived/${id}`, {}, options)
+      .pipe(retry(3), catchError(this.handleError));
+  }
+
+  // ERROR HANDLING --------------------------------------------------------------------------------------------------------------
   private handleError(error: HttpErrorResponse) {
     if (error.error instanceof ErrorEvent) {
-      // A client-side or network error occurred.
       console.error('An error occurred:', error.error.message);
       return throwError(() => new Error(error.error.message));
     } else {
-      // The backend returned an unsuccessful response code.
-      console.error(
-        `Backend returned code ${error.status}, body was: ${JSON.stringify(error.error)}`
-      );
-      // Use the error message from the backend if available.
+      console.error(`Backend returned code ${error.status}, body was: ${JSON.stringify(error.error)}`);
       const errorMessage = error.error?.message || 'Something bad happened; please try again later.';
       return throwError(() => new Error(errorMessage));
     }
